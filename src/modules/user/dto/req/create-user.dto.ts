@@ -1,12 +1,38 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  Matches,
+  MinLength,
+} from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsCityAllowed } from '../../../../common/decorators/city.decorator';
 
 export class CreateUserDto {
-  @ApiProperty()
-  name: string;
+  @IsOptional()
+  @IsString()
+  @MinLength(2)
+  @Transform(({ value }) => value.trim())
+  name?: string;
 
-  @ApiProperty()
-  email: number;
+  @IsString()
+  @IsEmail()
+  email: string;
 
-  @ApiProperty()
+  @IsString()
+  // @IsStrongPassword()
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%_*#?&])[A-Za-z\d@$_!%*#?&]{8,}$/)
   password: string;
+
+  @Type(() => Date)
+  @IsOptional()
+  date: string;
+
+  @IsOptional()
+  @IsString()
+  @IsCityAllowed({
+    groups: ['Lviv', 'Odessa', 'Kyiv'],
+    message: 'City is not allowed',
+  })
+  city: string;
 }
