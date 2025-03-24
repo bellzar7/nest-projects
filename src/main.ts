@@ -14,10 +14,10 @@ async function letsgo() {
     .setDescription('The cats API description')
     .setVersion('1.0')
     .addBearerAuth({
+      in: 'header',
       type: 'http',
       scheme: 'bearer',
       bearerFormat: 'JWT',
-      in: 'header',
     })
     .build();
 

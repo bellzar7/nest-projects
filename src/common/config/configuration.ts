@@ -1,18 +1,29 @@
 import * as process from 'process';
-import { ConfigType } from './config.type';
+import { Config } from './config.type';
 
-export default (): ConfigType => ({
+export default (): Config => ({
   app: {
     port: process.env.APP_PORT ? parseInt(process.env.APP_PORT, 10) : 3000,
-    host: process.env.APP_HOST || '0.0.0.0',
+    host: process.env.APP_HOST || 'localhost',
   },
-  postgres: {
-    host: process.env.DATABASE_HOST || '0.0.0.0',
-    port: process.env.DATABASE_PORT
-      ? parseInt(process.env.DATABASE_PORT, 10)
+  database: {
+    host: process.env.POSTGRES_HOST ? process.env.POSTGRES_HOST : 'localhost',
+    port: process.env.POSTGRES_PORT
+      ? parseInt(process.env.POSTGRES_PORT, 10)
       : 5432,
-    postgres_user: process.env.POSTGRES_USER ?? '',
-    postgres_password: process.env.POSTGRES_PASSWORD ?? '',
-    postgres_db: process.env.POSTGRES_DB ?? '',
+    user: process.env.POSTGRES_USER ? process.env.POSTGRES_USER : 'postgres',
+    password: process.env.POSTGRES_PASSWORD
+      ? process.env.POSTGRES_PASSWORD
+      : 'password',
+    name: process.env.POSTGRES_DB ? process.env.POSTGRES_DB : 'postgres',
+  },
+  redis: {
+    host: process.env.REDIS_HOST ? process.env.REDIS_HOST : 'localhost',
+    port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
+    password: process.env.REDIS_PASSWORD ? process.env.REDIS_PASSWORD : '',
+  },
+  aws: {
+    accessKey: process.env.AWS_ACCESS_KEY ? process.env.AWS_ACCESS_KEY : '',
+    secretKey: process.env.AWS_SECRET_KEY ? process.env.AWS_SECRET_KEY : '',
   },
 });
